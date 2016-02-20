@@ -30,7 +30,9 @@ def get_poisson_dists(tweets):
 
 def get_statistics(tweets):
     probs = get_poisson_dists(tweets)
-    print(squareFit(probs))
+    sleep = squareFit(probs)
+    db.update(sleep)
+
     stats = {
         'well_rested': True,
         'rest_percentage': 17,

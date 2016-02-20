@@ -18,3 +18,10 @@ def update_sleep(hours_sleep):
     firebase.put('/', 'num_users', num_users + 1)
     firebase.put('/', 'hours_sleep', new_hours_sleep)
 
+def update(sleep_stats):
+    variance, wake, bed = sleep_stats
+    if wake > bed:
+        hours_sleep = bed + (24 * 60 - wake)
+    else:
+        hours_sleep = bed - wake
+    update_sleep(hours_sleep)
