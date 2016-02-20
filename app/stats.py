@@ -29,13 +29,55 @@ def get_poisson_dists(tweets):
     return probs
 
 def get_statistics(tweets):
-    probs = jsonify_dist(get_poisson_dists(tweets))
+    probs = get_poisson_dists(tweets)
+    print(squareFit(probs))
     stats = {
         'well_rested': True,
         'rest_percentage': 17,
-        'probs': probs
+        'probs': jsonify_dist(probs)
         }
     return stats
+
+def squareFit(probs):
+    maxVal = max(probs, key=probs.get) #find the max of the set
+    mylist = (float('inf'), 0, 0)
+    for waketime in range(0, 24 * 60, 10):
+        for bedtime in range(0, 24 * 60, 10):
+            if (abs(waketime - bedtime) < 60): continue
+            variance = varianceCalc(waketime, bedtime, probs, maxVal)
+            # print('w ' + str(waketime) + ' b' + str(bedtime) + ' v' + str(variance))
+            if (variance < mylist[0]):
+                mylist = (variance, waketime, bedtime)
+    return mylist
+
+def varianceCalc(waketime, bedtime, probs, maxVal):
+    variance = 0
+    base = 5
+    height = averageHeight(probs)
+    for position in range(0, 24 * 60, 5):
+        if (bedtime > waketime and (waketime < position < bedtime)):
+            variance = variance + base * (probs[position] - height)**2
+            # print('1' )
+        elif ((bedtime < waketime) and (position > bedtime or position < waketime)):
+            variance = variance + base * (probs[position] - height)**2
+            # print('2' )
+        else:
+            variance = variance + base * (probs[position])**2
+            # print('3' )
+    return variance
+
+def sleepCoefficient(mylist, maxVal):
+    coefficient = mylist[0] / ((maxVal^2) * (60 * 24))
+    return (1 - coefficient)
+
+def averageHeight(probs):
+    total = 0
+    for i in range(0, 60 * 24, 5):
+        total = total + probs[i]
+    average = 5 * total / (24 * 60)
+    # print("The averaage is " + str(average))
+    return average
+
 
 def jsonify_dist(probs):
     json = []
