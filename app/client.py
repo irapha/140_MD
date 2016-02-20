@@ -38,8 +38,6 @@ class Client(object):
         if not self.access_token:
             self.access_token = self._get_access_token()
 
-        print(url)
-        print(self.access_token)
         request = Request(url)
         request.add_header('Authorization', 'Bearer %s' % self.access_token)
         try:
