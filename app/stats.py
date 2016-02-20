@@ -22,3 +22,12 @@ def get_poisson_dists(tweets):
                timestep - 60 <= t + 24*60 < timestep + 60:
                 probs[timestep] += counts[t]
     return probs
+
+def get_statistics(tweets):
+    probs = get_poisson_dists(tweets)
+    stats = {
+        'well_rested': True,
+        'rest_percentage': 17,
+        'probs': probs
+        }
+    return stats

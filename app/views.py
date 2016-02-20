@@ -1,6 +1,7 @@
 from app import app
 from app.twitter import get_tweets
-from app.stats import get_poisson_dists
+from app.stats import get_statistics
+from flask import render_template
 
 
 @app.route('/')
@@ -10,14 +11,7 @@ def index():
 
 
 @app.route('/user/<username>')
-def stats(username):
-    # Call functions that compute stats for user
+def render_stats(username):
     tweets = get_tweets(username)
-    probs = get_poisson_dists(tweets)
-
-    print(probs)
-
-    for t in sorted(probs):
-        print(str(t) + ', ' + str(probs[t]))
-
-    return username + ' statistics: you sleep too much. #sleepisfortheweak.'
+    stats = get_statistics(tweets)
+    return render_template('layout.html', stats=stats)
