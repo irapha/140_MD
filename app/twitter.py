@@ -1,8 +1,8 @@
 from client import Client
 
 
-CONSUMER_KEY = ''
-CONSUMER_SECRET = ''
+CONSUMER_KEY = 'cC5zlxowoKxqaBmLzupkCvRqc'
+CONSUMER_SECRET = 'Qd9uT03YEY2vmTG1xW97PjTaoaABw90CQOhSeyfdSrEDlPdsZm'
 
 
 def get_tweets(username, max_num=1000):
@@ -11,4 +11,3 @@ def get_tweets(username, max_num=1000):
         '?screen_name=' + str(username) +
         '&count=' + str(max_num)
     return client.request(request_url)
-
