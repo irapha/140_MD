@@ -30,8 +30,8 @@ def get_poisson_dists(tweets):
 
 def get_statistics(tweets):
     probs = get_poisson_dists(tweets)
-    sleep = squareFit(probs)
-    db.update(sleep)
+    sleep_stats = squareFit(probs)
+    db.update(get_hours_sleep(sleep_stats))
 
     stats = {
         'well_rested': True,
@@ -39,6 +39,14 @@ def get_statistics(tweets):
         'probs': jsonify_dist(probs)
         }
     return stats
+
+def get_hours_sleep(sleep_stats):
+    variance, wake, bed = sleep_stats
+    if wake > bed:
+        hours_sleep = bed + (24 * 60 - wake)
+    else:
+        hours_sleep = bed - wake
+    return hours_sleep
 
 def squareFit(probs):
     maxVal = max(probs, key=probs.get) #find the max of the set
