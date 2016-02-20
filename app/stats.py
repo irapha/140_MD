@@ -1,3 +1,4 @@
+import app.db as db
 from datetime import datetime
 
 def count(tweets):
