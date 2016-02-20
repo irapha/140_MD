@@ -9,4 +9,4 @@ def index():
 @app.route('/user/<username>')
 def stats(username):
     # Call functions that compute stats for user
-    return username + ' statistics: you sleep too much. #sleep is for the weak.'
+    return username + ' statistics: you sleep too much. #sleepisfortheweak.'
