@@ -31,3 +31,30 @@ def get_statistics(tweets):
         'probs': probs
         }
     return stats
+
+def squareFit(tweets):
+    probs = get_poisson_dists(tweets)
+    maxVal = max(probs, probs.get) #find the max of the set
+    mylist = [maxVal, 0, 0]
+    for timestep in range(0, 24 * 60, 5)
+        for distancestep in range (60, 24 * 60, 20)
+            variance = varianceCalc(timestep, distancestep, probs, maxVal)
+            if (variance < mylist.get(1))
+                mylist[1] = variance
+                mylist[2] = timestep
+                mylist[3] = distancestep
+    return mylist
+
+def varianceCalc(timestep, distancestep, probs, maxVal):
+    position1 = timestep
+    varaince = 0
+    base = 5
+    for timestep in range(timestep, 24 * 60 + timestep, 5)
+        if (timestep > postition1 and timestep < (position1 + distancestep))
+            variance = variance + base * (probs[timestep%(24 * 60)] - maxVal)^2
+        else
+            variance = variance + base * (probs[timestep%(24 * 60)])^2
+    return variance
+
+def sleepCoefficient(mylist, maxVal):
+    coefficient = mylist[1] / ((maxVal^2) * (60 * 24))
