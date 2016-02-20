@@ -1,4 +1,4 @@
-from client import Client
+from app.client import Client
 
 
 CONSUMER_KEY = 'cC5zlxowoKxqaBmLzupkCvRqc'
