@@ -31,22 +31,28 @@ def get_poisson_dists(tweets):
 def get_statistics(tweets):
     probs = get_poisson_dists(tweets)
     sleep_stats = squareFit(probs)
-    db.update(get_hours_sleep(sleep_stats))
+    minutesSlept = get_minutes_sleep(sleep_stats)
+    db.update(minutesSlept)
+
 
     stats = {
         'well_rested': True,
         'rest_percentage': 17,
-        'probs': jsonify_dist(probs)
+        'probs': jsonify_dist(probs),
+        'hoursSlept': minutesSlept / 60,
+        'wakeUpTime': "{0:.2f}".format(sleep_stats[1] / 60),
+        'bedTime': "{0:.2f}".format(sleep_stats[2] / 60),
+        'sleepCoefficient': 10 * sleep_stats[0],
         }
     return stats
 
-def get_hours_sleep(sleep_stats):
+def get_minutes_sleep(sleep_stats):
     variance, wake, bed = sleep_stats
     if wake > bed:
-        hours_sleep = bed + (24 * 60 - wake)
+        minutes_sleep = bed + (24 * 60 - wake)
     else:
-        hours_sleep = bed - wake
-    return hours_sleep
+        minutes_sleep = bed - wake
+    return minutes_sleep
 
 def squareFit(probs):
     maxVal = max(probs, key=probs.get) #find the max of the set
@@ -58,6 +64,7 @@ def squareFit(probs):
             # print('w ' + str(waketime) + ' b' + str(bedtime) + ' v' + str(variance))
             if (variance < mylist[0]):
                 mylist = (variance, waketime, bedtime)
+    mylist = (sleepCoefficient(mylist, maxVal), mylist[1], mylist[2])
     return mylist
 
 def varianceCalc(waketime, bedtime, probs, maxVal):
