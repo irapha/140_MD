@@ -25,6 +25,14 @@
 
     <div id="graph"></div>
 
+    <p>
+    Out of your {{ stats.sentiment.num_tweets }} most recent tweets, {{ stats.sentiment.positive }}% were positive,
+    {{ stats.sentiment.positive_relative }}% more/less than the average user
+    
+    On the other hand, {{ stats.sentiment.negative }}% were negative,
+    {{ stats.sentiment.negative_relative }}% more/less than the average user.
+    </p>
+
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- bootstrap js -->
