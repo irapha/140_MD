@@ -3,6 +3,7 @@ import app.sentiment as sa
 
 from datetime import datetime
 
+
 def count(tweets):
     if not tweets:
         return {}
@@ -34,16 +35,22 @@ def get_poisson_dists(tweets):
 def get_statistics(tweets):
     probs = get_poisson_dists(tweets)
     sleep_stats = squareFit(probs)
-    db.update_sleep(get_hours_sleep(sleep_stats))
+    minutesSlept = get_minutes_sleep(sleep_stats)
+    db.update_sleep(minutesSlept)
     sent_stats = count_sentiments(tweets)
 
     stats = {
         'well_rested': True,
         'rest_percentage': 17,
         'probs': jsonify_dist(probs),
+        'hoursSlept': 24 - (minutesSlept / 60),
+        'wakeUpTime': "{0:.0f}".format(sleep_stats[1] / 60),
+        'bedTime': "{0:.0f}".format(sleep_stats[2] / 60),
+        'sleepCoefficient': 100 * sleep_stats[0],
         'sentiment': sent_stats
         }
     return stats
+
 
 def count_sentiments(tweets, max_num=20):
     sents = { 'positive': 0, 'negative': 0, 'neutral': 0 }
@@ -72,13 +79,13 @@ def count_sentiments(tweets, max_num=20):
     db.update_sentiment(sents['positive'], sents['negative'], sents['neutral'])
     return sent_stats
 
-def get_hours_sleep(sleep_stats):
+def get_minutes_sleep(sleep_stats):
     variance, wake, bed = sleep_stats
     if wake > bed:
-        hours_sleep = bed + (24 * 60 - wake)
+        minutes_sleep = bed + (24 * 60 - wake)
     else:
-        hours_sleep = bed - wake
-    return hours_sleep
+        minutes_sleep = bed - wake
+    return minutes_sleep
 
 def squareFit(probs):
     maxVal = max(probs, key=probs.get) #find the max of the set
@@ -90,6 +97,7 @@ def squareFit(probs):
             # print('w ' + str(waketime) + ' b' + str(bedtime) + ' v' + str(variance))
             if (variance < mylist[0]):
                 mylist = (variance, waketime, bedtime)
+    mylist = (sleepCoefficient(mylist, probs), mylist[1], mylist[2])
     return mylist
 
 def varianceCalc(waketime, bedtime, probs, maxVal):
@@ -108,8 +116,9 @@ def varianceCalc(waketime, bedtime, probs, maxVal):
             # print('3' )
     return variance
 
-def sleepCoefficient(mylist, maxVal):
-    coefficient = mylist[0] / ((maxVal^2) * (60 * 24))
+def sleepCoefficient(mylist, probs):
+    maxVariance = sum([5 * (probs[e])**2 for e in probs])
+    coefficient = mylist[0] / maxVariance
     return (1 - coefficient)
 
 def averageHeight(probs):

@@ -7,6 +7,9 @@
 
     <title>140 MD</title>
     <!-- bootstrap css -->
+    <style>
+    h1 {text-align: center;}
+    </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <!-- optional bootstrap theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
@@ -16,14 +19,25 @@
     <h1>140 <sup>MD</sup></h1>
 
     <p>
+      We have been stalking you, and we are {{stats.sleepCoefficient}}% confident that you slept {{stats.hoursSlept}} hours last night.
+      We expect that you will wake up around {{stats.wakeUpTime}} and go to bed around {{stats.bedTime}}.
     {% if stats.well_rested %}
       Congratulations! You sleep {{ stats.rest_percentage }}% more than other users of 140 MD.
     {% else %}
       Uh oh. Seems like you sleep {{ stats.rest_percentage }}% less than other users of 140 MD.
     {% endif %}
-    </p>
 
-    <div id="graph"></div>
+    </p>
+    <style type="text/css">
+<!--
+body {
+background-image: url(http://www.desktopwallpapers.org.ua/pic/201110/1366x768/desktopwallpapers.org.ua-6272.jpg);
+background-repeat: no-repeat;
+}
+-->
+</style>
+
+    <div id="graph" align="center"></div>
 
     <p>
     Out of your {{ stats.sentiment.num_tweets }} most recent tweets, {{ stats.sentiment.positive }}% were positive,
