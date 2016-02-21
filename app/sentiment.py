@@ -1,7 +1,7 @@
 import requests
 
 
-API_KEY = '4ae65adf24d114a6325399d2b77b3722'
+API_KEY = '021c7fbb7087642804d04224864418c7'
 
 def get_sentiment(tweet):
     request_url = 'http://api.datumbox.com/1.0/SentimentAnalysis.json'
