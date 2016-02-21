@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>140 MD</title>
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!-- optional bootstrap theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <!-- our styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='140mdwebpage.css') }}">
+  </head>
+
+  <body>
+
+
+    <div id="logo_wrapper">
+      <img src="{{ url_for('static', filename='logo.png') }}" style="height:90px; margin-right:10px;" />
+      <h1>140 M.D.</h1>
+    </div>
+    <div class='p_wrapper'>
+      <p>
+        Please enter your Twitter username. 140 MD will perform a quick medical checkup on your sleep schedule.
+      </p>
+      <form method="post" onsubmit="submitHandler(this);">
+        Twitter Name: <br>
+        <input type = "text" name = "TwitterName"><br/>
+        <input type="submit"/>
+      </form>
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+    function submitHandler(form) {
+      alert('hey');
+      url = {{ url_for('index') }} + '/user/' + form.TwitterName;
+
+      return false;
+    }
+    </script>
+  </body>
+</html>
