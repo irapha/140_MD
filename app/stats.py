@@ -1,4 +1,6 @@
 import app.db as db
+import app.sentiment as sa
+
 from datetime import datetime
 
 
@@ -34,8 +36,8 @@ def get_statistics(tweets):
     probs = get_poisson_dists(tweets)
     sleep_stats = squareFit(probs)
     minutesSlept = get_minutes_sleep(sleep_stats)
-    db.update(minutesSlept)
-
+    db.update_sleep(minutesSlept)
+    sent_stats = count_sentiments(tweets)
 
     stats = {
         'well_rested': True,
@@ -45,8 +47,37 @@ def get_statistics(tweets):
         'wakeUpTime': "{0:.0f}".format(sleep_stats[1] / 60),
         'bedTime': "{0:.0f}".format(sleep_stats[2] / 60),
         'sleepCoefficient': 100 * sleep_stats[0],
+        'sentiment': sent_stats
         }
     return stats
+
+
+def count_sentiments(tweets, max_num=20):
+    sents = { 'positive': 0, 'negative': 0, 'neutral': 0 }
+
+    for tweet in tweets[:max_num]:
+        try:
+            sents[sa.get_sentiment(tweet['text'])] += 1
+        except KeyError:
+            continue
+
+    num_tweets = sum(sents.values())
+
+    sent_stats = {}
+    sent_stats['num_tweets'] = num_tweets
+    sent_stats['positive'] = 100 * sents['positive'] / num_tweets
+    sent_stats['negative'] = 100 * sents['negative'] / num_tweets
+
+    db_pos = db.get_positive()
+    db_neg = db.get_negative()
+    db_neu = db.get_neutral()
+    db_total = db_pos + db_neg + db_neu
+
+    sent_stats['positive_relative'] = sent_stats['positive'] - (100 * db_pos / db_total)
+    sent_stats['negative_relative'] = sent_stats['negative'] - (100 * db_neg / db_total)
+
+    db.update_sentiment(sents['positive'], sents['negative'], sents['neutral'])
+    return sent_stats
 
 def get_minutes_sleep(sleep_stats):
     variance, wake, bed = sleep_stats
