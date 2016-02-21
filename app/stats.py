@@ -50,7 +50,7 @@ def get_statistics(tweets):
         'wakeUpTime_str': "%d:%d" % (sleep_stats[1] // 60, 60*(sleep_stats[1]/60 - (sleep_stats[1]//60))),
         'bedTime': sleep_stats[2],
         'bedTime_str': "%d:%d" % (sleep_stats[2] // 60, 60*(sleep_stats[2]/60 - (sleep_stats[2]//60))),
-        'sleepCoefficient': 100 * sleep_stats[0],
+        'sleepCoefficient': "%.2f" % (100 * sleep_stats[0]),
         'sentiment': sent_stats
         }
     return stats
@@ -80,6 +80,9 @@ def count_sentiments(tweets, max_num=20):
 
     sent_stats['positive_relative'] = sent_stats['positive'] - (100 * db_pos / db_total)
     sent_stats['negative_relative'] = sent_stats['negative'] - (100 * db_neg / db_total)
+
+    sent_stats['pos_relative_str'] = "%.2f" % (float(sent_stats['positive_relative']))
+    sent_stats['neg_relative_str'] = "%.2f" % (float(sent_stats['negative_relative']))
 
     db.update_sentiment(sents['positive'], sents['negative'], sents['neutral'])
     return sent_stats
