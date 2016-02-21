@@ -28,17 +28,17 @@
       <p>
         Please enter your Twitter username. 140 MD will perform a quick medical checkup on your sleep schedule.
       </p>
-    
+
       <script>
-        function submitHandler() {
-          alert('hey');
-          url = {{ url_for('index') }} + '/user/' + form.TwitterName;
-        }
+        // function submitHandler() {
+        //   alert('hey');
+        //   url = {{ url_for('index') }} + '/user/' + form.TwitterName;
+        // }
       </script>
-     
-      <form style="text-align: center;">
+
+      <form method = "POST" style="text-align: center;" onsubmit="submitHandler();">
         @<input type="text" name="TwitterName">
-        <input type="submit" onclick="submitHandler();"/>
+        <input type="submit" />
       </form>
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
