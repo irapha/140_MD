@@ -21,24 +21,26 @@
       <img src="{{ url_for('static', filename='logo.png') }}" style="height:90px; margin-right:10px;" />
       <h1>140 M.D.</h1>
     </div>
+
+    <h3 style="width:100%; text-align: center;">The byte-sized sleep checkup</h3>
+
     <div class='p_wrapper'>
       <p>
         Please enter your Twitter username. 140 MD will perform a quick medical checkup on your sleep schedule.
       </p>
-      <form method="post" onsubmit="submitHandler(this);">
-        Twitter Name: <br>
-        <input type = "text" name = "TwitterName"><br/>
-        <input type="submit"/>
+    
+      <script>
+        function submitHandler() {
+          alert('hey');
+          url = {{ url_for('index') }} + '/user/' + form.TwitterName;
+        }
+      </script>
+     
+      <form style="text-align: center;">
+        @<input type="text" name="TwitterName">
+        <input type="submit" onclick="submitHandler();"/>
       </form>
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script>
-    function submitHandler(form) {
-      alert('hey');
-      url = {{ url_for('index') }} + '/user/' + form.TwitterName;
-
-      return false;
-    }
-    </script>
   </body>
 </html>

@@ -43,7 +43,7 @@ def get_statistics(tweets):
 
     stats = {
         'well_rested': (minutes_slept/ db.get_sleep() > 1),
-        'rest_percentage': abs(100 * minutes_slept/ db.get_sleep() - 100),
+        'rest_percentage': "%.2f" % abs(100 * minutes_slept/ db.get_sleep() - 100),
         'probs': jsonify_dist(probs),
         'hoursSlept': hours_slept,
         'wakeUpTime': sleep_stats[1],
