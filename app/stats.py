@@ -1,7 +1,7 @@
 import app.db as db
 import app.sentiment as sa
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def count(tweets):
@@ -35,17 +35,21 @@ def get_poisson_dists(tweets):
 def get_statistics(tweets):
     probs = get_poisson_dists(tweets)
     sleep_stats = squareFit(probs)
-    minutesSlept = get_minutes_sleep(sleep_stats)
-    db.update_sleep(minutesSlept)
+    minutes_awake = get_minutes_sleep(sleep_stats)
+    minutes_slept = 24*60 - (minutes_awake)
+    db.update_sleep(minutes_slept)
     sent_stats = count_sentiments(tweets)
+    hours_slept = "%d:%d" % (minutes_slept // 60, 60*(minutes_slept/60 - (minutes_slept//60)))
 
     stats = {
         'well_rested': True,
         'rest_percentage': 17,
         'probs': jsonify_dist(probs),
-        'hoursSlept': 24 - (minutesSlept / 60),
-        'wakeUpTime': "{0:.0f}".format(sleep_stats[1] / 60),
-        'bedTime': "{0:.0f}".format(sleep_stats[2] / 60),
+        'hoursSlept': hours_slept,
+        'wakeUpTime': sleep_stats[1],
+        'wakeUpTime_str': "%d:%d" % (sleep_stats[1] // 60, 60*(sleep_stats[1]/60 - (sleep_stats[1]//60))),
+        'bedTime': sleep_stats[2],
+        'bedTime_str': "%d:%d" % (sleep_stats[2] // 60, 60*(sleep_stats[2]/60 - (sleep_stats[2]//60))),
         'sleepCoefficient': 100 * sleep_stats[0],
         'sentiment': sent_stats
         }
@@ -62,6 +66,7 @@ def count_sentiments(tweets, max_num=20):
             continue
 
     num_tweets = sum(sents.values())
+    if num_tweets == 0: num_tweets = 1
 
     sent_stats = {}
     sent_stats['num_tweets'] = num_tweets

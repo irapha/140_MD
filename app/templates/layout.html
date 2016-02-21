@@ -20,7 +20,7 @@
 
     <p>
       We have been stalking you, and we are {{stats.sleepCoefficient}}% confident that you slept {{stats.hoursSlept}} hours last night.
-      We expect that you will wake up around {{stats.wakeUpTime}} and go to bed around {{stats.bedTime}}.
+      We expect that you will wake up around {{stats.wakeUpTime_str}} and go to bed around {{stats.bedTime_str}}.
     {% if stats.well_rested %}
       Congratulations! You sleep {{ stats.rest_percentage }}% more than other users of 140 MD.
     {% else %}
@@ -32,6 +32,7 @@
 <!--
 body {
 background-image: url(http://www.desktopwallpapers.org.ua/pic/201110/1366x768/desktopwallpapers.org.ua-6272.jpg);
+background-size: cover;
 background-repeat: no-repeat;
 }
 -->

@@ -42,12 +42,11 @@ function render_graph(data, waketime, bedtime) {
     .attr("r", 3)
     .style("fill", function(d) {
       var position = d[0];
-
-      if (bedtime > waketime && (waketime < position && position < bedtime)) {
-        return 'green';
+      if (waketime < position && position < bedtime) {
+        return '#ff9900';
       } else if ((bedtime < waketime) && (position > bedtime || position < waketime)) {
-        return 'green';
+        return '#ff9900';
       }
-      return 'blue';
+      return '#000099';
     });
 }
