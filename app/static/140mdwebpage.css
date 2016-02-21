@@ -1,15 +1,23 @@
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-h1 {140 MD :center;}
-p {text-align:center;}
-</style>
-</head>
-<body>
-
-<h1>This is a heading</h1>
-<p>This is a paragraph.</p>
-
-</body>
-</html>
+body {
+  background-image: url(http://www.desktopwallpapers.org.ua/pic/201110/1366x768/desktopwallpapers.org.ua-6272.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+h1 {
+  display: inline;
+  vertical-align: middle;
+}
+#logo_wrapper {
+  text-align: center;
+  padding-top: 20px;
+}
+.centered {
+  text-align: center;
+}
+.p_wrapper {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  padding-left: 22%;
+  padding-right: 22%;
+  font-size: 20px;
+}
