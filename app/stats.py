@@ -1,6 +1,7 @@
 import app.db as db
 from datetime import datetime
 
+
 def count(tweets):
     if not tweets:
         return {}
@@ -40,10 +41,10 @@ def get_statistics(tweets):
         'well_rested': True,
         'rest_percentage': 17,
         'probs': jsonify_dist(probs),
-        'hoursSlept': minutesSlept / 60,
-        'wakeUpTime': "{0:.2f}".format(sleep_stats[1] / 60),
-        'bedTime': "{0:.2f}".format(sleep_stats[2] / 60),
-        'sleepCoefficient': 10 * sleep_stats[0],
+        'hoursSlept': 24 - (minutesSlept / 60),
+        'wakeUpTime': "{0:.0f}".format(sleep_stats[1] / 60),
+        'bedTime': "{0:.0f}".format(sleep_stats[2] / 60),
+        'sleepCoefficient': 100 * sleep_stats[0],
         }
     return stats
 
@@ -65,7 +66,7 @@ def squareFit(probs):
             # print('w ' + str(waketime) + ' b' + str(bedtime) + ' v' + str(variance))
             if (variance < mylist[0]):
                 mylist = (variance, waketime, bedtime)
-    mylist = (sleepCoefficient(mylist, maxVal), mylist[1], mylist[2])
+    mylist = (sleepCoefficient(mylist, probs), mylist[1], mylist[2])
     return mylist
 
 def varianceCalc(waketime, bedtime, probs, maxVal):
@@ -84,8 +85,9 @@ def varianceCalc(waketime, bedtime, probs, maxVal):
             # print('3' )
     return variance
 
-def sleepCoefficient(mylist, maxVal):
-    coefficient = mylist[0] / ((maxVal^2) * (60 * 24))
+def sleepCoefficient(mylist, probs):
+    maxVariance = sum([5 * (probs[e])**2 for e in probs])
+    coefficient = mylist[0] / maxVariance
     return (1 - coefficient)
 
 def averageHeight(probs):
