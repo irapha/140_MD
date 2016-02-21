@@ -45,7 +45,9 @@
     <script>
       $(function() {
         var tweet_statistics = {{ stats.probs }}; 
-        render_graph(tweet_statistics);
+        var waketime = {{ stats.wakeUpTime }};
+        var bedtime = {{ stats.bedTime }};
+        render_graph(tweet_statistics, waketime, bedtime);
       });
     </script>
   </body>

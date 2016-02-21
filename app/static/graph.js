@@ -1,4 +1,4 @@
-function render_graph(data) {
+function render_graph(data, waketime, bedtime) {
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
       width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
@@ -39,5 +39,15 @@ function render_graph(data) {
     .attr("cy", function(d) {
         return y(d[1]);
     })
-    .attr("r", 3);
+    .attr("r", 3)
+    .style("fill", function(d) {
+      var position = d[0];
+
+      if (bedtime > waketime && (waketime < position && position < bedtime)) {
+        return 'green';
+      } else if ((bedtime < waketime) && (position > bedtime || position < waketime)) {
+        return 'green';
+      }
+      return 'blue';
+    });
 }
